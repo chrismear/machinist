@@ -69,7 +69,7 @@ module MachinistActiveRecordSpecs
       
       it "should allow creating an object through a has_many association" do
         Post.blueprint do
-          comments { [Comment.make] }
+          comments { [MachinistActiveRecordSpecs::Comment.make] }
         end
         Comment.blueprint { }
         Post.make.comments.should have(1).instance_of(Comment)
