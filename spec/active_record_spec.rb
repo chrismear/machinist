@@ -31,6 +31,25 @@ describe Machinist::ActiveRecord do
         User.make!(:username => "")
       }.should raise_error(ActiveRecord::RecordInvalid)
     end
+    
+    describe "on a has_many association" do
+      context "when no association is specified in the blueprints" do
+        before do
+          Post.blueprint { }
+          Comment.blueprint { }
+          @post = Post.make!
+          @comment = @post.comments.make!
+        end
+      
+        it "saves the created object" do
+          @comment.should_not be_new_record
+        end
+      
+        it "retains the parent association on the created object" do
+          @comment.post.should == @post
+        end
+      end
+    end
   end
 
   context "associations support" do
