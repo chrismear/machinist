@@ -49,6 +49,23 @@ describe Machinist::ActiveRecord do
           @comment.post.should == @post
         end
       end
+      
+      context "when the belongs-to association is specified in the blueprints" do
+        before do
+          Post.blueprint { }
+          Comment.blueprint { post }
+          @post = Post.make!
+          @comment = @post.comments.make!
+        end
+      
+        it "saves the created object" do
+          @comment.should_not be_new_record
+        end
+      
+        it "retains the parent association on the created object" do
+          @comment.post.should == @post
+        end
+      end
     end
   end
 
